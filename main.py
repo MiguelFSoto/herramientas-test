@@ -6,6 +6,7 @@ from random import randint
 from functools import partial
 import json
 from datetime import datetime
+import os
 
 from playerClass import Player
 from tileStatesClass import TileStates
@@ -186,6 +187,7 @@ def checkWin(player1, player2):
             with open("data.json", "r") as f:
                 # Lee los datos del json y los guarda como un diccionario
                 data = f.read()
+        # Si el archivo no existe, lo crea
         except IOError:
             file = open("data.json", "w")
 
@@ -365,6 +367,11 @@ def saveJson(player):
     # Lee la fecha y hora actual para crear el nombre del archivo
     now = datetime.now()
     fileName = player.name + now.strftime("%d%m%y%H%M") + ".json"
+
+    # Si el directorio donde se guardan los archivos no existe, lo crea
+    if not os.path.exists("./locations/"):
+        os.makedirs("./locations/")
+
     # Guarda los datos del diccionario de ubicaciones del jugador en la carpeta locations
     f = open("./locations/" + fileName, "w+")
     f.write(json.dumps(player.locations, indent = 4))
